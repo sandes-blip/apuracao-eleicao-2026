@@ -47,6 +47,14 @@ server {
 }
 ```
 
+**Opção C: VPS com Traefik em Docker Swarm (setup atual de 31.97.254.210, em `/root/apuracao-eleicao-2026`)**.
+O backend roda via compose e o portal como serviço Swarm na rede `YvessNet`, com certificado do `letsencryptresolver`:
+```bash
+docker compose up -d --build postgres coletor motor
+docker stack deploy -c infra/stack-web.yml apuracao
+# atualizar o portal: docker compose build web && docker service update --force --image apuracao-web:latest apuracao_web
+```
+
 ## 3. Conferir que está coletando
 ```bash
 sudo docker compose ps                                   # postgres, coletor, motor, web (e caddy) "running"

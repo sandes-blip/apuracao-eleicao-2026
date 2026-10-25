@@ -1,0 +1,26 @@
+# Portal público na VPS com Traefik (Swarm). O backend (postgres, coletor, motor) roda via docker compose.
+# Uso: docker stack deploy -c infra/stack-web.yml apuracao
+# Atualizar: docker compose build web && docker service update --force --image apuracao-web:latest apuracao_web
+services:
+  web:
+    image: apuracao-web:latest
+    volumes:
+      - /root/apuracao-eleicao-2026/data/public:/srv/data:ro
+    networks: [YvessNet]
+    deploy:
+      replicas: 1
+      update_config: {order: start-first}
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.apuracao.rule: Host(`resultados-eleicao.yvesscopy.com`)
+        traefik.http.routers.apuracao.entrypoints: websecure
+        traefik.http.routers.apuracao.tls: "true"
+        traefik.http.routers.apuracao.tls.certresolver: letsencryptresolver
+        traefik.http.services.apuracao.loadbalancer.server.port: "80"
+    logging:
+      driver: json-file
+      options: {max-size: "20m", max-file: "5"}
+
+networks:
+  YvessNet:
+    external: true
