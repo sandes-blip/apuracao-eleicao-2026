@@ -47,7 +47,7 @@ def gerar(seed: int = 0, passo: float = 3.0, params=None) -> Path:
     t_sorted = o.t[o.ordem]
     out_dir = s.public_dir / "replay" / "2022"
     cands = [{"n": c["n"], "nome": c["nome"], "partido": c["partido"], "cor": c["cor"],
-              "foto": f"/data/fotos/{c['n']}.jpeg"} for c in s.candidatos]
+              "foto": None} for c in s.candidatos]  # fotos publicadas são de 2026: no replay 2022, iniciais
     idx = {"eleicao": "2022", "titulo": "2º turno 2022 (simulação: ordem real de chegada dos boletins)",
            "seed": seed, "resultado_final": {"13": round(final["pct_a"], 2), "22": round(100 - final["pct_a"], 2)},
            "momentos": []}
