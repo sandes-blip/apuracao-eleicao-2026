@@ -1,0 +1,19 @@
+# Configuração do REPLAY/backtest do 2º turno presidencial 2022 (usada via ELEICAO_CONFIG=config/eleicao2022.yaml).
+titulo: "2º turno presidencial 2022 (simulação)"
+ciclo: ele2022
+eleicao_base: "544"       # 1º turno 2022
+eleicao_alvo: "2022"      # id do replay no portal (data/public/replay/2022)
+cargo: "1"                # Presidente
+data: "2022-10-30"
+candidatos:
+  - {n: "13", nome: "Lula", partido: "PT", cor: "#2563eb", chave: "a"}
+  - {n: "22", nome: "Jair Bolsonaro", partido: "PL", cor: "#d97706", chave: "b"}
+covariaveis_1t: ["12", "15"]   # Ciro Gomes, Simone Tebet (demais somados em "resto")
+regioes:
+  N: [ac, am, ap, pa, ro, rr, to]
+  NE: [al, ba, ce, ma, pb, pe, pi, rn, se]
+  CO: [df, go, ms, mt]
+  SE: [es, mg, rj, sp]
+  S: [pr, rs, sc]
+  EXT: [zz]
+grandes_colegios: [sp, mg, rj, ba, rs, pr, pe, ce]

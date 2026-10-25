@@ -1,0 +1,70 @@
+# Portal de apuração 2026. Uso: docker compose up -d --build
+# HTTPS automático (se as portas 80/443 da VPS estiverem livres): docker compose --profile https up -d --build
+x-logging: &logging
+  driver: json-file
+  options: {max-size: "20m", max-file: "5"}
+
+x-python: &python
+  build: {context: ., dockerfile: infra/Dockerfile.python}
+  image: apuracao-python:latest
+  env_file: .env
+  environment:
+    DATA_DIR: /data
+    DATABASE_URL: postgresql://apuracao:${POSTGRES_PASSWORD:-apuracao}@postgres:5432/apuracao
+  volumes:
+    - ${DATA_PATH:-./data}:/data
+  restart: unless-stopped
+  logging: *logging
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: apuracao
+      POSTGRES_USER: apuracao
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-apuracao}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U apuracao"]
+      interval: 10s
+      retries: 5
+    restart: unless-stopped
+    logging: *logging
+
+  coletor:
+    <<: *python
+    command: ["python", "-m", "apuracao.collector.main"]
+    depends_on: [postgres]
+
+  motor:
+    <<: *python
+    command: ["python", "-m", "apuracao.engine.main"]
+    depends_on: [postgres, coletor]
+
+  web:
+    build: {context: ., dockerfile: infra/Dockerfile.web}
+    image: apuracao-web:latest
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    volumes:
+      - ${DATA_PATH:-./data}/public:/srv/data:ro
+    restart: unless-stopped
+    logging: *logging
+
+  caddy:
+    profiles: ["https"]
+    image: caddy:2-alpine
+    ports: ["80:80", "443:443"]
+    environment:
+      DOMINIO: ${DOMINIO:-resultados-eleicao.yvesscopy.com}
+    command: caddy reverse-proxy --from ${DOMINIO:-resultados-eleicao.yvesscopy.com} --to web:80
+    volumes:
+      - caddy_data:/data
+    depends_on: [web]
+    restart: unless-stopped
+    logging: *logging
+
+volumes:
+  pgdata:
+  caddy_data:

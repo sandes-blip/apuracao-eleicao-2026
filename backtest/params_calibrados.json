@@ -1,0 +1,26 @@
+{
+  "fonte": "backtest/b2022.py (1T 2022 -> 2T 2022 por município; ordem real de chegada dos boletins de urna)",
+  "perda": null,
+  "parcial": false,
+  "params": {
+    "k_uf": 6.0,
+    "k_reg": 10.0,
+    "k_cov": 120.0,
+    "k_int": 2.0,
+    "s_mun": 0.045,
+    "s_ord": 1.0,
+    "sig_nat0": 0.045,
+    "sig_nat_min": 0.012,
+    "sig_reg0": 0.05,
+    "sig_reg_min": 0.005,
+    "sig_uf_min": 0.05,
+    "kappa": 1.0,
+    "min_mun_cov": 200,
+    "s_t": 0.04,
+    "sig_t_nat": 0.015,
+    "sig_t_uf": 0.02
+  },
+  "escolha": "config B (região plana da busca: s_ord>=1, s_mun 0.03-0.045) + sig_uf_min=0.05 para cobertura de IC95 por UF",
+  "metricas_nacional_6seeds_nsim5000": null,
+  "nota": "Pisos/escalas não listados aqui ficam no default do modelo. min_mun_cov não teve efeito (>=1.4k municípios com dados já a 5%)."
+}

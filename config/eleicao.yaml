@@ -1,0 +1,20 @@
+# Configuração da disputa. Trocar este arquivo reaproveita o sistema em 2028/2030/white-label.
+titulo: "2º turno presidencial 2026"
+ciclo: ele2026
+eleicao_base: "6257"      # 1º turno (base histórica)
+eleicao_alvo: "6258"      # 2º turno (apuração ao vivo)
+cargo: "1"                # Presidente (c0001)
+data: "2026-10-25"
+candidatos:               # ordem fixa pelo número de urna
+  - {n: "13", nome: "Lula", partido: "PT", cor: "#2563eb", chave: "a"}
+  - {n: "22", nome: "Flávio Bolsonaro", partido: "PL", cor: "#d97706", chave: "b"}
+# candidatos do 1º turno modelados individualmente como covariáveis (votos que se transferem)
+covariaveis_1t: ["70", "14", "55"]   # Cury, Renan Santos, Caiado (demais somados em "resto")
+regioes:
+  N: [ac, am, ap, pa, ro, rr, to]
+  NE: [al, ba, ce, ma, pb, pe, pi, rn, se]
+  CO: [df, go, ms, mt]
+  SE: [es, mg, rj, sp]
+  S: [pr, rs, sc]
+  EXT: [zz]
+grandes_colegios: [sp, mg, rj, ba, rs, pr, pe, ce]

@@ -1,0 +1,17 @@
+# segredos
+.env
+# ambientes e builds
+.venv/
+node_modules/
+web/dist/
+web/mock-data/
+dist/
+__pycache__/
+*.pyc
+# dados: só a base do 1º turno, mapas e fotos vão para o repositório (o resto é gerado na VPS)
+data/*
+!data/base/
+!data/public/
+data/public/*
+!data/public/geo/
+!data/public/fotos/
