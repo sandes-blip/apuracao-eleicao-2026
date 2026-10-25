@@ -9,7 +9,15 @@ baixar de novo depois. Antes da apuração ele faz cerca de 1 requisição a cad
   "proxied" (nuvem laranja), com SSL/TLS em **Full**.
 
 ## 1. Copiar o projeto
-Na máquina local:
+**Opção 1, via GitHub** (repositório privado `sandes-blip/apuracao-eleicao-2026`; a VPS precisa de acesso:
+`gh auth login` ou um token/deploy key):
+```bash
+sudo git clone https://github.com/sandes-blip/apuracao-eleicao-2026.git /opt/apuracao && cd /opt/apuracao
+sudo cp .env.example .env && sudo nano .env   # preencher ANTHROPIC_API_KEY e POSTGRES_PASSWORD
+```
+Para atualizar durante a noite: `sudo git pull && sudo docker compose up -d --build motor web` (os dados em `data/` ficam).
+
+**Opção 2, via pacote.** Na máquina local:
 ```bash
 ./infra/empacotar.sh                        # gera dist/apuracao-2026.tar.gz (inclui a base do 1º turno e os mapas)
 scp dist/apuracao-2026.tar.gz usuario@IP_DA_VPS:/opt/
