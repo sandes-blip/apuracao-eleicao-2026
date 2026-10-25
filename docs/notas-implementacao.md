@@ -20,3 +20,13 @@
 9. **Replay**: o motor publica um retrato completo a cada ciclo com mudança (`/data/replay/6258/`); o replay de 2022 é
    gerado pelo backtest.
 10. Ambiente simulado do TSE (`resultados-sim`) não respondia em 25/10; testes usaram os arquivos reais do 1º turno.
+11. **Calibração real (2022)**: `backtest/b2022.py` usa a ordem real de chegada de cada seção (`DT_BU_RECEBIDO` dos
+    boletins de urna). A reconstrução bate com a história: Lula passa à frente com 67,6% das seções, às 18h43.
+    Com os parâmetros calibrados (`backtest/params_calibrados.json`), o erro médio da P2 cai de 0,43 para 0,17 p.p.,
+    a cobertura do IC95 nacional fica em 100%, e a das UFs vai de 83% para 95%. Detalhes em `backtest/relatorio_2022.md`.
+12. **Limitação conhecida (para depois da eleição)**: dentro de um município parcialmente apurado, as seções que faltam
+    tendem a ser sistematicamente diferentes das já apuradas (em 2022, mais favoráveis a Lula). Hoje isso é tratado
+    dando pouco peso a municípios parciais (`s_ord=1.0`). A correção estrutural está prototipada em
+    `backtest/modelo_proposto.py`: no backtest ela reduz o erro para 0,09 p.p., mas ainda é sensível a parâmetros.
+13. **Validação ao vivo**: o motor compara a previsão de cada município, feita antes de ele reportar, com o resultado
+    quando ele passa de 50% apurado. Se houver viés sistemático, a faixa de incerteza é alargada automaticamente (até 1,6x).

@@ -1,20 +1,20 @@
 """Backtest REAL: 1º turno 2022 -> 2º turno 2022 (Lula 13 x Bolsonaro 22), por município.
 
-Fonte única: Portal de Dados Abertos do TSE (cdn.tse.jus.br). Nunca acessa resultados.tse.jus.br.
-  - votacao_candidato_munzona_2022.zip  (usa só o CSV _BR = cargo Presidente)
-  - detalhe_votacao_munzona_2022.zip    (usa só o CSV _BR; aptos/comparecimento/válidos/brancos/nulos/seções
-                                         e HH_ULTIMA_TOTALIZACAO por zona)
+Fonte única: Portal de Dados Abertos do TSE (dadosabertos.tse.jus.br / cdn.tse.jus.br). NUNCA acessa
+resultados.tse.jus.br.
+  - votacao_candidato_munzona_2022.zip  (só o CSV _BR = Presidente): base do 1º turno por município
+  - detalhe_votacao_munzona_2022.zip    (só o CSV _BR): eleitorado/comparecimento/válidos/brancos/nulos
+  - bweb_2t_{UF}_*.zip (dataset "Resultados - 2022 - Boletim de Urna"): uma linha por seção do 2º turno com
+    DT_BU_RECEBIDO -> ordem REAL de chegada e verdade final (bate exatamente com o oficial).
 
-Ordem de chegada: reconstruída a partir do horário real da última totalização de cada (município, zona) no 2º
-turno de 2022. Cada zona recebe uma rampa de chegada das seções que termina no seu horário de totalização (com
-jitter por semente). Isso reproduz a ordem real UF/região e o viés de ordem dentro dos municípios com várias
-zonas (capitais). Validação de realismo: o placar oficial (P0) deve virar para Lula em ~67,8% das seções
-(fato histórico: 18h44 de 30/10/2022, 67,76% das seções; 98,8% às 19h55).
+Ordem de chegada: seed 0 = ordem real exata dos boletins; seed>0 = ordem real perturbada (UF/zona/seção).
+Validação: o placar oficial vira para Lula em 67,62% das seções às 18h43 (histórico: 67,76%, 18h44).
 
 Uso:
-  .venv/bin/python -m backtest.b2022                 # tabela default x calibrado (params_calibrados.json)
-  .venv/bin/python -m backtest.b2022 calibrar        # busca coordenada e grava params_calibrados.json
-  .venv/bin/python -m backtest.b2022 replay [seed]   # gera data/public/replay/2022/*
+  .venv/bin/python -m backtest.b2022 [tabela] [--md]   # tabela default x calibrado (x proposto, se houver)
+  .venv/bin/python -m backtest.b2022 realismo          # curva do P0 / ponto de virada por semente
+  .venv/bin/python -m backtest.b2022 calibrar          # busca coordenada e grava params_calibrados.json
+  .venv/bin/python -m backtest.b2022 replay [seed]     # gera data/public/replay/2022/*
 """
 from __future__ import annotations
 

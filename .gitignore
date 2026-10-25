@@ -15,3 +15,6 @@ data/*
 data/public/*
 !data/public/geo/
 !data/public/fotos/
+!data/public/replay/
+data/public/replay/*
+!data/public/replay/2022/
